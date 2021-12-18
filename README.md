@@ -2,6 +2,8 @@
 
 ## Purpose
 - describe at a high level what the application will do
+
+The Feed Me Terminal Application is a point of sale program for the fictiona
 - identify the problem it will solve and explain why you are developing it
 - identify the target audience
 - explain how a member of the target audience will use it

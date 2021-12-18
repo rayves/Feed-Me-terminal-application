@@ -12,6 +12,7 @@ end
 
 
 
+
 module Menu
     MENU = './data/menu.csv'
     @@menu = CSV.parse(File.read(MENU), headers: true)
@@ -27,12 +28,25 @@ module Menu
     def Menu.display_menu
         return @@food_table
     end
+
     def Menu.create_customer
+        begin
         name = gets.chomp
+        if name.empty? || name.nil?
+            raise NoNameError
+        end
+        rescue NoNameError
+            puts "Name cannot be empty. Please input your name."
+            print "> "
+            retry
+        rescue
+            puts "An Error has occured."
+        end
         name = Customer.new(name)
         puts"Welcome #{name.name.capitalize}! what would you like to do?"
         puts "\n"
     end
+
     def Menu.display_options
         puts "What would you like to do?"
         puts "[1] Order"
@@ -40,7 +54,8 @@ module Menu
         puts "[3] Delete Order"
         puts "[4] Help"
         puts "[5] Quit"
-    end
+        puts "\n"
+        
     def Menu.selection
         while options = gets.chomp.to_i
             case options
@@ -57,6 +72,7 @@ module Menu
             end
         end
     end
+
     def Menu.order
         puts Menu.display_menu
         system("clear")
@@ -65,6 +81,7 @@ module Menu
             name.order_cost << @@price[options - 1]
         end
     end
+
     def Menu.exit
         cancel = false
         puts "Are you sure you want to cancel? (Yes/No)"
@@ -82,4 +99,5 @@ module Menu
             end
         end
     end
+    
 end

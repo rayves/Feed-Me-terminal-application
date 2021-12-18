@@ -10,11 +10,13 @@ class Menu_item
 end
   
 class Customer
-  attr_accessor :name
+  attr_accessor :name, :order
 
   def initialize(name)
     @name = name
     @order = []
+    @order_cost = []
     @cust_id = rand(0..1000000)
   end
 end
+  

@@ -16,8 +16,10 @@ menu = CSV.parse(File.read(MENU), headers: true)
 
 #Main Program
 intro
-Menu.display_menu
+Menu.create_customer
+Menu.display_options
 Menu.selection
+
 
 
 

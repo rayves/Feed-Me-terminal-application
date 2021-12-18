@@ -1,5 +1,5 @@
 def help
-    return "The FEED ME app is a simple app that will take your order and send that information to the kitchen for your order to be prepared."
+    puts "The FEED ME app is a simple app that will take your order and send that information to the kitchen for your order to be prepared."
     puts "Please follow the dialog intructions as you go along until your receipt is printed for your order to to confirmed."
     puts "If you require additional assistance, please ask our friendly staff your help."
 end
@@ -30,7 +30,7 @@ module Menu
     def Menu.create_customer
         name = gets.chomp
         name = Customer.new(name)
-        puts"Welcome #{name.name.capitalize}! what would you like to order?"
+        puts"Welcome #{name.name.capitalize}! what would you like to do?"
         puts "\n"
     end
     def Menu.display_options
@@ -39,17 +39,19 @@ module Menu
         puts "[2] Review Cart"
         puts "[3] Delete Order"
         puts "[4] Help"
-        puts "[5] Exit"
+        puts "[5] Quit"
     end
     def Menu.selection
-        while options = Integer(gets.chomp)
-            case
+        while options = gets.chomp.to_i
+            case options
             when 1
                 Menu.display_menu
             when 2
             when 3
             when 4
+                help
             when 5
+                Menu.exit
             else
                 "Invalid Input! Please enter one of the numbers listed in order to proceed"
             end
@@ -61,6 +63,23 @@ module Menu
         if options > 0 && options < @@food.length
             name.order << @@food[options - 1]
             name.order_cost << @@price[options - 1]
+        end
+    end
+    def Menu.exit
+        cancel = false
+        puts "Are you sure you want to cancel? (Yes/No)"
+        print "> "
+        while cancel = gets.chomp
+            if cancel.downcase == "no"
+                Menu.display_options
+                break
+            elsif cancel.downcase == "yes"
+                puts "We're sorry to see you go! Please come back if you feel the need for some original food."
+                exit!
+            else
+                puts "Invalid Input! Please enter yes or no"
+                print "> "
+            end
         end
     end
 end

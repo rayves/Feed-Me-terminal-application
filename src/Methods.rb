@@ -8,15 +8,28 @@ def intro
     puts welcome to "FEED ME!"
 end
 
-def display_menu
-    menu = CSV.parse(File.read(MENU), headers: true)
-    food = Hash[menu.by_col[0].zip(menu.by_col[2])]
-    description = menu.by_col[1]
-    ingredients = menu.by_col[3]
-    food_rows = []
-    food.each_with_index do |(food, price), index|
-         food_rows << [index + 1, food, "$#{price}"]
+module Menu
+    MENU = './data/menu.csv'
+    @@menu = CSV.parse(File.read(MENU), headers: true)
+    @@food = Hash[@@menu.by_col[0].zip(@@menu.by_col[2])]
+    @@description = @@menu.by_col[1]
+    @@ingredients = @@menu.by_col[3]
+    @@food_rows = []
+    @@food.each_with_index do |(food, price), index|
+        @@food_rows << [index + 1, food, "$#{price}"]
     end
-    food_table = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => food_rows
-    return food_table
+    @@food_table = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => @@food_rows
+    def Menu.display_menu
+        return @@food_table
+    end
+    def Menu.selection
+        while options = gets.chomp.to_i
+            system("clear")
+            case options
+            when 1
+               @order << @@food[0]
+                break
+            end
+        end
+    end
 end

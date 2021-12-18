@@ -24,9 +24,11 @@ name = Customer.new(name)
 
 puts"Welcome #{name.name.capitalize}! what would you like to order?"
 puts "\n"
-puts display_menu
+# puts Menu.display_menu
+# puts Menu.selection
+pp Menu.self.@@food
 
-
+pp name.order
 
 # while gets.chomp
 #     case 1

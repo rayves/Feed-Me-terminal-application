@@ -7,3 +7,11 @@ end
 def intro
     puts welcome to "FEED ME!"
 end
+
+def display_menu
+    menu = CSV.parse(File.read(MENU), headers: true)
+    food = menu.by_col[0]
+    food.each_with_index do |food, index|
+        puts "#{index + 1}. #{food}"
+    end
+end

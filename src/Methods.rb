@@ -10,8 +10,13 @@ end
 
 def display_menu
     menu = CSV.parse(File.read(MENU), headers: true)
-    food = menu.by_col[0]
-    food.each_with_index do |food, index|
-        puts "#{index + 1}. #{food}"
+    food = Hash[menu.by_col[0].zip(menu.by_col[2])]
+    description = menu.by_col[1]
+    ingredients = menu.by_col[3]
+    food_rows = []
+    food.each_with_index do |(food, price), index|
+         food_rows << [index + 1, food, "$#{price}"]
     end
+    food_table = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => food_rows
+    return food_table
 end

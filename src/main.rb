@@ -1,4 +1,5 @@
 require 'csv'
+require 'terminal-table'
 
 require_relative './classes'
 require_relative './methods'
@@ -23,4 +24,9 @@ name = Customer.new(name)
 
 puts"Welcome #{name.name.capitalize}! what would you like to order?"
 puts "\n"
-display_menu
+puts display_menu
+
+
+
+# while gets.chomp
+#     case 1

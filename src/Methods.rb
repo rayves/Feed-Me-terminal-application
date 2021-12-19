@@ -19,6 +19,25 @@ def create_list_table(table1, table2)
     return table_display
 end
 
+def cust_table(table1, table2)
+    items_count = table1.tally
+    prices_count = table2.tally
+    multiple = prices_count.values
+    items = items_count.keys
+    prices = prices_count.keys.map(&:to_f)
+    prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
+    total_arrray = multiple.zip(items, prices_total)
+    table = []
+    multiple.zip(items, prices_total).each do |multiple, item, price|
+        table << ["#{multiple}x", item, "$#{price.round(2)}"]
+    end
+    table << :separator
+    table << ["", "Total", "$#{prices_total.sum.round(2)}"]
+    table_display = Terminal::Table.new :headings => ["Quantitiy", "Name", "Price"], :rows => table
+    puts "\n"
+    return table_display
+end
+
 def invalid_input(message)
     puts "Invalid Input."
     puts message
@@ -34,7 +53,14 @@ def mark
     print "> "
 end
 
+#*table summary function - potential implementation
+# - .tally array with food -> results in hash with food items and value counts
+# - .tally array with prices
+# - convert tally hash into arrays
+
+
 module Menu
+    #* Module variables used in caontained methods
     MENU = './data/menu.csv'
     @@menu = CSV.parse(File.read(MENU), headers: true)
     @@food = @@menu.by_col[0]
@@ -42,12 +68,6 @@ module Menu
     @@price = @@menu.by_col[2]
     @@ingredients = @@menu.by_col[3]
     @@food_table = create_list_table(@@food, @@price)
-    # @@food_rows = []
-    # @@food.zip(@@price).each_with_index do |(food, price), index|
-    #     @@food_rows << [index + 1, food, "$#{price}"]
-    # end
-    # @@food_table = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => @@food_rows
-
     
 
     def Menu.display_menu
@@ -55,11 +75,13 @@ module Menu
         puts "\n"
     end
 
-    # def Menu.returning_to_menu
-    #     puts "Returning to main menu."
-    #     puts "\n"
-    #     break
-    # end
+    def Menu.ask_order_select
+        puts "Please select the items you would like to add to your cart."
+        puts "Input 'cancel' if you would like to return to the main menu."
+        puts "\n"
+        mark
+    end 
+
 
     def Menu.display_options
         puts "What would you like to do?"
@@ -138,14 +160,16 @@ module Menu
                                     cust_name.order << @@food[shopping.to_i - 1]
                                     cust_name.order_cost << @@price[shopping.to_i - 1]
                                     puts "#{@@food[shopping.to_i - 1]} has been added to your cart."
-                                    clear
-                                    Menu.display_menu
-                                    puts "would you like to order something else? (yes/no)"
+                                    # clear
+                                    # Menu.display_menu
+                                    puts "Would you like to order something else? (yes/no)"
                                     mark
                                     shopping_again = false
                                     while shopping_again = gets.chomp
                                         if shopping_again.downcase == "yes"
+                                            clear
                                             Menu.display_menu
+                                            Menu.ask_order_select
                                             break
                                         elsif shopping_again.downcase == "no"
                                             puts "Returning to main menu."
@@ -183,7 +207,7 @@ module Menu
                     #     show_order << [index + 1, food, "$#{price}"]
                     # end
                     # pp show_order
-                    puts create_list_table(cust_name.order, cust_name.order_cost)
+                    puts cust_table(cust_name.order, cust_name.order_cost)
                     Menu.display_options
                 when 3
                 when 4

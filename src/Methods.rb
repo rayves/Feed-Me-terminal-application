@@ -59,9 +59,10 @@ module Menu
         puts "What would you like to do?"
         puts "[1] Order"
         puts "[2] Review Cart"
-        puts "[3] Delete Order"
-        puts "[4] Help"
-        puts "[5] Quit"
+        puts "[3] Remove item from order"
+        puts "[4] Checkout"
+        puts "[5] Help"
+        puts "[6] Quit"
         puts "\n"
         print "> "
     end
@@ -163,8 +164,9 @@ module Menu
                     Menu.display_options
                 when 3
                 when 4
-                    help
                 when 5
+                    help
+                when 6
                     Menu.exit
                 else
                     puts "Invalid Input! Please enter one of the numbers listed in order to proceed"

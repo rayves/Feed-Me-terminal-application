@@ -19,8 +19,9 @@ def create_list_table(table1, table2)
     return table_display
 end
 
-def Invalid_input
-    puts "Invalid Input. Please Please input the number next to items to make your selection."
+def invalid_input(message)
+    puts "Invalid Input."
+    puts message
     puts "\n"
 end
 
@@ -95,12 +96,23 @@ module Menu
                     puts "Would you like to know more about any of these items? (yes/no)"
                     while info = gets.chomp
                         if info.downcase == "yes"
-
+                            info_section = false
+                            puts "Please input the number for the item you wish to know more about. Otherwise if you want to return, please input 'cancel'"
+                            while info_section = gets.chomp
+                                if info_section.to_i > 0 && info_section.to_i <= @@food.length
+                                    puts @@description[info_section.to_i - 1]
+                                elsif info_section.downcase == "cancel"
+                                    puts "Would you like to know more about any of these items? (yes/no)"
+                                    break
+                                else
+                                    invalid_input("Please Please input the number next to items to make your selection or cancel")
+                                end
+                            end
                         elsif info.downcase == "no"
                             puts "Please select the items you would like to add to your cart"
                             shopping = false
                             while shopping = gets.chomp
-                                if shopping.to_i > 0 && shopping.to_i < @@food.length
+                                if shopping.to_i > 0 && shopping.to_i <= @@food.length
                                     cust_name.order << @@food[shopping.to_i - 1]
                                     cust_name.order_cost << @@price[shopping.to_i - 1]
                                     puts "#{@@food[shopping.to_i - 1]} has been added to your cart."
@@ -127,14 +139,18 @@ module Menu
                                     puts "\n"
                                     puts "Returning to main menu."
                                     puts "\n"
-                                    break
+                                    Menu.display_options
+                                    throw(:end)
+                                    # break
                                 else
-                                    puts "Invalid Input. Please Please input the number next to items to make your selection."
-                                    puts Menu.display_menu
+                                    invalid_input("Please Please input the number next to items to make your selection.")
+                                    Menu.display_menu
                                 end
                             end
                         else
-
+                            invalid_input("Please input yes or no")
+                            puts "\n"
+                            puts "Would you like to know more about any of these items? (yes/no)"
                         end
                     end
                 when 2
@@ -151,7 +167,7 @@ module Menu
                 when 5
                     Menu.exit
                 else
-                    "Invalid Input! Please enter one of the numbers listed in order to proceed"
+                    puts "Invalid Input! Please enter one of the numbers listed in order to proceed"
                     Menu.display_options
                 end
             end

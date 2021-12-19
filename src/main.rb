@@ -11,15 +11,12 @@ require_relative './methods'
 MENU = './data/menu.csv'
 menu = CSV.parse(File.read(MENU), headers: true)
 
-
+order = []
 
 
 #Main Program
 intro
-Menu.create_customer
-# Menu.display_options
-Menu.selection
-
+Menu.menu
 
 
 

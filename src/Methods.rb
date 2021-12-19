@@ -9,9 +9,6 @@ def intro
     puts "Please tell me your name so we can start your order."
 end
 
-
-
-
 module Menu
     MENU = './data/menu.csv'
     @@menu = CSV.parse(File.read(MENU), headers: true)
@@ -24,10 +21,13 @@ module Menu
         @@food_rows << [index + 1, food, "$#{price}"]
     end
     @@food_table = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => @@food_rows
+    @@cust_name = ""
 
     def Menu.display_menu
-        return @@food_table
+        puts @@food_table
         puts "\n"
+        puts "What would you like to order? Please input the number next to items to make your selection. Otherise if you would like to go back, please enter 'cancel'"
+        print "> "
     end
 
     # def Menu.returning_to_menu
@@ -35,29 +35,6 @@ module Menu
     #     puts "\n"
     #     break
     # end
-
-
-    def Menu.create_customer
-        begin
-        print "> "
-        cust_name = gets.chomp
-        if name.empty? || name.nil?
-            raise NoNameError
-        end
-        cust_name = Customer.new(cust_name)
-        rescue NoNameError
-            puts "Name cannot be empty. Please input your name."
-            print "> "
-            retry
-        rescue
-            puts "An Error has occured."
-        end
-    end
-
-    def Menu.welcome_message
-        puts"Welcome #{cust_name.name.capitalize}! what would you like to do?"
-        puts "\n"
-    end
 
     def Menu.display_options
         puts "What would you like to do?"
@@ -69,16 +46,68 @@ module Menu
         puts "\n"
     end
         
-    def Menu.selection
-        system("clear")
-        Menu.welcome_message
+    def Menu.menu
+        # system("clear")
+        begin
+        print "> "
+        cust_name = gets.chomp
+        if name.empty? || name.nil?
+            raise NoNameError
+        end
+        rescue NoNameError
+            puts "Name cannot be empty. Please input your name."
+            print "> "
+            retry
+        rescue
+            puts "An Error has occured."
+        end
+        cust_name = Customer.new(cust_name)
+        puts "Welcome #{cust_name.name.capitalize}! what would you like to do?"
+        puts "\n"
+
         Menu.display_options
+
         print "> "
         while options = gets.chomp.to_i
             case options
             when 1
-                Menu.order
-                Menu.order_again
+                system("clear")
+                Menu.display_menu
+                shopping = false
+                while shopping = gets.chomp
+                    if shopping.to_i > 0 && shopping.to_i < @@food.length
+                        cust_name.order << @@food[shopping.to_i - 1]
+                        cust_name.order_cost << @@price[shopping.to_i - 1]
+                        puts "#{@@food[shopping.to_i - 1]} has been added to your cart."
+                        puts "would you like to order something else?"
+                        print "> "
+                        shopping_again = false
+                        while shopping_again = gets.chomp
+                            if shopping_again.downcase == "yes"
+                                Menu.display_menu
+                                break
+                            elsif shopping_again.downcase == "no"
+                                puts "Returning to main menu."
+                                puts "\n"
+                                # shopping = "cancel"
+                                break
+                            else
+                                puts "Invalid Input! Please enter yes or no"
+                                puts "\n"
+                                puts "would you like to order something else?"
+                                print "> "
+                            end
+                        end
+                    elsif shopping.downcase == "cancel"
+                        puts "Returning to main menu."
+                        puts "\n"
+                        break
+                    else
+                        "Invalid Input. Please Please input the number next to items to make your selection."
+                        puts Menu.display_menu
+                        print "> "
+                    end
+                end
             when 2
             when 3
             when 4
@@ -93,50 +122,50 @@ module Menu
         end
     end
 
-    def Menu.order
-        system("clear")
-        puts Menu.display_menu
-        puts "What would you like to order? Please input the number next to items to make your selection. Otherise if you would like to go back, please enter 'cancel'"
-        print "> "
-        shopping = false
-        while shopping = gets.chomp.to_i
-            if shopping > 0 && shopping < @@food.length
-                name.order << @@food[shopping - 1]
-                name.order_cost << @@price[shopping - 1]
-                puts "#{@@food[shopping]} has been added to your cart."
-                break
-            elsif shopping.downcase == "cancel"
-                puts "Returning to main menu."
-                puts "\n"
-                break
-            else
-                "Invalid Input. Please Please input the number next to items to make your selection."
-                puts Menu.display_menu
-                print "> "
-            end
-        end
-    end
+    # def Menu.order
+    #     system("clear")
+    #     puts Menu.display_menu
+    #     puts "What would you like to order? Please input the number next to items to make your selection. Otherise if you would like to go back, please enter 'cancel'"
+    #     print "> "
+    #     shopping = false
+    #     while shopping = gets.chomp.to_i
+    #         if shopping > 0 && shopping < @@food.length
+    #             name.order << @@food[shopping - 1]
+    #             name.order_cost << @@price[shopping - 1]
+    #             puts "#{@@food[shopping]} has been added to your cart."
+    #             break
+    #         elsif shopping.downcase == "cancel"
+    #             puts "Returning to main menu."
+    #             puts "\n"
+    #             break
+    #         else
+    #             "Invalid Input. Please Please input the number next to items to make your selection."
+    #             puts Menu.display_menu
+    #             print "> "
+    #         end
+    #     end
+    # end
 
-    def Menu.order_again
-        system("clear")
-        puts "would you like to order something else?"
-        print "> "
-        shopping_again = false
-        while shopping_again = gets.chomp
-            if shopping_again.downcase == "yes"
-                Menu.order
-            elsif shopping_again.downcase == "no"
-                puts "Returning to main menu."
-                puts "\n"
-                break
-            else
-                puts "Invalid Input! Please enter yes or no"
-                puts "\n"
-                puts "would you like to order something else?"
-                print "> "
-            end
-        end
-    end
+    # def Menu.order_again
+    #     system("clear")
+    #     puts "would you like to order something else?"
+    #     print "> "
+    #     shopping_again = false
+    #     while shopping_again = gets.chomp
+    #         if shopping_again.downcase == "yes"
+    #             Menu.order
+    #         elsif shopping_again.downcase == "no"
+    #             puts "Returning to main menu."
+    #             puts "\n"
+    #             break
+    #         else
+    #             puts "Invalid Input! Please enter yes or no"
+    #             puts "\n"
+    #             puts "would you like to order something else?"
+    #             print "> "
+    #         end
+    #     end
+    # end
 
     def Menu.exit
         puts "Are you sure you want to cancel? (Yes/No)"

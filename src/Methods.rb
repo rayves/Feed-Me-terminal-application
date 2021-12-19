@@ -7,7 +7,6 @@ end
 def intro
     puts "welcome to FEED ME!"
     puts "Please tell me your name so we can start your order."
-    print "> "
 end
 
 
@@ -25,16 +24,27 @@ module Menu
         @@food_rows << [index + 1, food, "$#{price}"]
     end
     @@food_table = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => @@food_rows
+
     def Menu.display_menu
         return @@food_table
+        puts "\n"
     end
+
+    # def Menu.returning_to_menu
+    #     puts "Returning to main menu."
+    #     puts "\n"
+    #     break
+    # end
+
 
     def Menu.create_customer
         begin
-        name = gets.chomp
+        print "> "
+        cust_name = gets.chomp
         if name.empty? || name.nil?
             raise NoNameError
         end
+        cust_name = Customer.new(cust_name)
         rescue NoNameError
             puts "Name cannot be empty. Please input your name."
             print "> "
@@ -42,8 +52,10 @@ module Menu
         rescue
             puts "An Error has occured."
         end
-        name = Customer.new(name)
-        puts"Welcome #{name.name.capitalize}! what would you like to do?"
+    end
+
+    def Menu.welcome_message
+        puts"Welcome #{cust_name.name.capitalize}! what would you like to do?"
         puts "\n"
     end
 
@@ -55,12 +67,18 @@ module Menu
         puts "[4] Help"
         puts "[5] Quit"
         puts "\n"
+    end
         
     def Menu.selection
+        system("clear")
+        Menu.welcome_message
+        Menu.display_options
+        print "> "
         while options = gets.chomp.to_i
             case options
             when 1
-                Menu.display_menu
+                Menu.order
+                Menu.order_again
             when 2
             when 3
             when 4
@@ -69,23 +87,61 @@ module Menu
                 Menu.exit
             else
                 "Invalid Input! Please enter one of the numbers listed in order to proceed"
+                Menu.display_options
+                print "> "
             end
         end
     end
 
     def Menu.order
-        puts Menu.display_menu
         system("clear")
-        if options > 0 && options < @@food.length
-            name.order << @@food[options - 1]
-            name.order_cost << @@price[options - 1]
+        puts Menu.display_menu
+        puts "What would you like to order? Please input the number next to items to make your selection. Otherise if you would like to go back, please enter 'cancel'"
+        print "> "
+        shopping = false
+        while shopping = gets.chomp.to_i
+            if shopping > 0 && shopping < @@food.length
+                name.order << @@food[shopping - 1]
+                name.order_cost << @@price[shopping - 1]
+                puts "#{@@food[shopping]} has been added to your cart."
+                break
+            elsif shopping.downcase == "cancel"
+                puts "Returning to main menu."
+                puts "\n"
+                break
+            else
+                "Invalid Input. Please Please input the number next to items to make your selection."
+                puts Menu.display_menu
+                print "> "
+            end
+        end
+    end
+
+    def Menu.order_again
+        system("clear")
+        puts "would you like to order something else?"
+        print "> "
+        shopping_again = false
+        while shopping_again = gets.chomp
+            if shopping_again.downcase == "yes"
+                Menu.order
+            elsif shopping_again.downcase == "no"
+                puts "Returning to main menu."
+                puts "\n"
+                break
+            else
+                puts "Invalid Input! Please enter yes or no"
+                puts "\n"
+                puts "would you like to order something else?"
+                print "> "
+            end
         end
     end
 
     def Menu.exit
-        cancel = false
         puts "Are you sure you want to cancel? (Yes/No)"
         print "> "
+        cancel = false
         while cancel = gets.chomp
             if cancel.downcase == "no"
                 Menu.display_options

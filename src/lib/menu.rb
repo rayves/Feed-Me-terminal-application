@@ -1,6 +1,3 @@
-require_relative './table_creation'
-
-
 module Menu
     #* Module variables used in contained methods
     MENU = './data/menu.csv'
@@ -44,11 +41,11 @@ module Menu
         #* get customer name for customer class initialization
         cust_name = gets.chomp
         if cust_name.empty? || cust_name.nil?
-            raise NoNameError
+            raise NoNameError, "Name cannot be empty. Please input your name."
         end
-        rescue NoNameError
+        rescue NoNameError => e
             clear
-            puts "Name cannot be empty. Please input your name."
+            puts e.message
             puts "\n"
             puts "Please tell me your name so we can start your order."
             retry

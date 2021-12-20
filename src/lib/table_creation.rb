@@ -79,7 +79,7 @@ def receipt(cart, order_prices, cust_id, discount, payment)
 
     table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantity", "Items", "Price"], :rows => table
 
-    File.open("./data/Receipt No. #{cust_id}.txt", 'w+') do |file|
+    File.open("./output/Receipt No. #{cust_id}.txt", 'w+') do |file|
         file.write(
             artii.asciify("FEED ME!"),
             "\n",

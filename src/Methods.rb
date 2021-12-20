@@ -84,10 +84,10 @@ module Menu
         puts "What would you like to do?"
         puts "[1] Order"
         puts "[2] Review Cart"
-        puts "[3] Remove item from order"
-        puts "[4] Checkout"
-        puts "[5] Help"
-        puts "[6] Quit"
+        # puts "[3] Remove item from order"
+        puts "[3] Checkout"
+        puts "[4] Help"
+        puts "[5] Quit"
         puts "\n"
         mark
     end
@@ -251,8 +251,29 @@ module Menu
                     puts cust_table(cust_name.order, cust_name.order_cost)
                     Menu.display_options
                 
-                #* DELETE ITEM FROM ORDER OPTION
-                when 3
+                # #* DELETE ITEM FROM ORDER OPTION
+                # when 3
+                #     clear
+                #     puts cust_table(cust_name.order, cust_name.order_cost)
+                #     puts "Please select the item you wish to delete by entering its name."
+                #     mark
+                #     while deleting = gets.chomp
+                #         if cust_name.order.key?(deleting.split(/ |\_/).map(&:capitalize).join(" "))
+                #             cust_name.order[deleting.split(/ |\_/).map(&:capitalize).join(" ")] -= 1
+                #             pp cust_name.order
+                #             pp cust_name.order_cost
+                #         elsif !cust_name.order.key?(deleting.downcase.capitalize) && @@food.include?(deleting.downcase.capitalize)
+                #             clear
+                #             puts cust_table(cust_name.order, cust_name.order_cost)
+                #             puts "You do not have this item in your cart"
+                #             puts "\n"
+                #             puts "Please select the item you wish to delete by entering its name."
+                #             mark
+                #         else
+                #             invalid_input("Please select the item you wish to delete by entering its name")
+                #         end
+                #     end
+
 
                 #* CHECKOUT OPTION
                 when 4

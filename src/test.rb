@@ -1,16 +1,11 @@
 require 'csv'
 require 'terminal-table'
+require 'colorize'
 
-require_relative './classes'
-require_relative './methods'
-
-MENU = './data/menu.csv'
-menu = CSV.parse(File.read(MENU), headers: true)
-food = menu.by_col[0]
-description = menu.by_col[1]
-price = menu.by_col[2]
-ingredients = menu.by_col[3]
-food_table = create_list_table(food, price)
+require_relative './lib/classes'
+require_relative './lib/methods'
+require_relative './lib/menu'
+require_relative './lib/table_creation'
 
 # menu = CSV.parse(File.read(MENU), headers: true)
 # food = Hash[menu.by_col[0].zip(menu.by_col[2])]
@@ -83,4 +78,4 @@ food_table = create_list_table(food, price)
   
 #   ray.display_order
 
-puts "HeLLo fRieNds".capitalize
+puts String.colors

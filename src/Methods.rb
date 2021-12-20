@@ -13,9 +13,9 @@ def intro
     puts "Please tell me your name so we can start your order."
 end
 
-def create_list_table(table1, table2)
+def create_list_table(menu_items, prices)
     table = []
-    table1.zip(table2).each_with_index do |(food, price), index|
+    menu_items.zip(prices).each_with_index do |(food, price), index|
         table << [index + 1, food, "$#{price}"]
     end
     table_display = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => table
@@ -39,6 +39,29 @@ def cust_table(cart, order_prices)
     return table_display
     puts "\n"
 end
+
+def checkout_table(cart, order_prices, discount)
+    multiple = cart.values
+    items = cart.keys
+    prices = order_prices.keys.map(&:to_f)
+    prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
+    table = []
+    multiple.zip(items, prices_total).each do |multiple, item, price|
+        table << ["#{multiple}x", item, "$#{price.round(2)}"]
+    end
+    order_sum = prices_total.sum.round(2)
+    table << :separator
+    table << ["", "Total", "$#{order_sum}"]
+    table << ["", "Discount", "$#{order_sum}"]
+    table << ["", "Grand Total", "$#{order_sum}"]
+    table_display = Terminal::Table.new :headings => ["Quantitiy", "Name", "Price"], :rows => table
+    puts "\n"
+    return table_display
+    puts "\n"
+end
+    
+
+
 
 def invalid_input(message)
     puts "Invalid Input."
@@ -276,18 +299,59 @@ module Menu
 
 
                 #* CHECKOUT OPTION
-                when 4
+                when 3
+                    clear
+                    if cust_name.order.length > 0
+                    puts "Your order is confirmed."
+                    puts "You will now proceed to the payment section."
+                    puts "Please enter any promotional discount code or employee discount code. Otherwise enter 'no'"
+                        while promo_code = gets.chomp
+                            if promo_code == "employee discount"
+                                discount = 0.15
+                                puts "Your employee discount of 15% =off final order has been added to your order."
+                                break
+                            elsif promo_code == "save the kids"
+                                discount = 0.10
+                                puts "Save the Kids promotional discount of 10% off has been added to your order."
+                                break
+                            elsif promo_code == "no"
+                                discount = 0
+                                puts "Proceeding to payment."
+                                break
+                            else
+                                invalid_input("Please only enter the promotional discount code, employee discount code, or no.")
+                            end
+                        end
+                    else
+                        clear
+                        puts "Your cart is empty."
+                        puts "\n"
+                        puts "Please select items to add to your cart by navigating through the Order selection before you can checkout."
+                        puts "\n"
+                        Menu.display_options
+                        # throw(:end)
+                    end
+                    if cust_name.order.length > 0
+                        checkout_table(cust_name.order, cust_name.order_cost, discount)
+                    end
+
+                    
+                    
+
+                            
+
                 
                 #* HELP OPTION
-                when 5
+                when 4
                     help
                 
                 #* EXIT PROGRAM OPTION
-                when 6
+                when 5
                     Menu.exit
 
                 else
-                    puts "Invalid Input! Please enter one of the numbers listed in order to proceed"
+                    clear
+                    invalid_input("Please enter one of the numbers listed in order to proceed")
                     Menu.display_options
                 end
             end

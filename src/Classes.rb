@@ -17,7 +17,7 @@ class Customer
     @name = name
     @order = {}
     @order_cost = {}
-    @cust_id = rand(0..1000000)
+    @cust_id = rand(1000000..9999999)
   end
 
   # def welcome_message

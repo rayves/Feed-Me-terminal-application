@@ -34,7 +34,7 @@ def cust_table(cart, order_prices)
     end
     table << :separator
     table << ["", "Total", "$#{prices_total.sum.round(2)}"]
-    table_display = Terminal::Table.new :headings => ["Quantitiy", "Name", "Price"], :rows => table
+    table_display = Terminal::Table.new :headings => ["Quantity", "Name", "Price"], :rows => table
     puts "\n"
     return table_display
     puts "\n"
@@ -60,7 +60,40 @@ def checkout_table(cart, order_prices, cust_id, discount)
     table << :separator
     table << ["", "Grand Total", "$#{order_total}"]
 
-    table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantitiy", "Items", "Price"], :rows => table
+    table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantity", "Items", "Price"], :rows => table
+    puts "\n"
+    return table_display
+    puts "\n"
+end
+
+def receipt(cart, order_prices, cust_id, discount, payment)
+    multiple = cart.values
+    items = cart.keys
+    prices = order_prices.keys.map(&:to_f)
+    prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
+    order_sum = prices_total.sum.round(2)
+    discount_amount = (order_sum * discount).round(2)
+    order_total = (order_sum - discount_amount).round(2)
+    change = (payment - order_total).round(2)
+    
+    table = []
+    multiple.zip(items, prices_total).each do |multiple, item, price|
+        table << ["#{multiple}x", item, "$#{price.round(2)}"]
+    end
+
+    table << :separator
+    table << ["", "Total", "$#{order_sum}"]
+    table << ["", "Discount", "-$#{discount_amount}"]
+    table << :separator
+    table << ["", "Grand Total", "$#{order_total}"]
+    table << ["", "Payment", "-$#{payment}"]
+    table << :separator
+    table << ["", "Change", "$#{change}"]
+
+    table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantity", "Items", "Price"], :rows => table
+
+    File.open("./data/Receipt No. #{cust_id}.txt", 'w+') { |file| file.write(table_display) }
+
     puts "\n"
     return table_display
     puts "\n"
@@ -361,7 +394,7 @@ module Menu
                                 puts "Payment confirmed"
                                 puts "your change is $#{(payment.to_f - grand_total).round(2)}"
                                 break
-                            elsif payment < grand_total
+                            elsif payment < grand_total && payment >= 0
                                 puts "Insufficient funds"
                                 puts "Please input an amount greater than the Grand Total of your order"
                             else
@@ -373,17 +406,15 @@ module Menu
                             puts "Please only enter full numbers"
                             retry
                         end
+                        puts "\n"
+                        puts receipt(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount, payment)
+                        puts "\n"
                         puts "Your order is being processed."
                         puts "Please take this receipt while your order is being prepared."
                         puts "Thank you for choosing us to full your belly."
                         puts "We hope you enjoy your meal and have a good day."
+                        exit!
                     end
-
-                    
-                    
-
-                            
-
                 
                 #* HELP OPTION
                 when 4
@@ -441,10 +472,17 @@ module Menu
         table << ["", "Discount", "-$#{discount_amount}"]
         table << :separator
         table << ["", "Grand Total", "$#{order_total}"]
-        table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantitiy", "Items", "Price"], :rows => table
+        table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantity", "Items", "Price"], :rows => table
         puts "\n"
         return table_display
         puts "\n"
     end    
+
+    # def Menu.order_completed
+    #     puts "Your order is being processed."
+    #     puts "Please take this receipt while your order is being prepared."
+    #     puts "Thank you for choosing us to full your belly."
+    #     puts "We hope you enjoy your meal and have a good day."
+    # end
     
 end

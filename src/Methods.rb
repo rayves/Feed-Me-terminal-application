@@ -40,7 +40,7 @@ def cust_table(cart, order_prices)
     puts "\n"
 end
 
-def checkout_table(cart, order_prices, discount)
+def checkout_table(cart, order_prices, cust_id, discount)
     multiple = cart.values
     items = cart.keys
     prices = order_prices.keys.map(&:to_f)
@@ -50,11 +50,15 @@ def checkout_table(cart, order_prices, discount)
         table << ["#{multiple}x", item, "$#{price.round(2)}"]
     end
     order_sum = prices_total.sum.round(2)
+    discount_amount = (order_sum * discount).round(2)
+    order_total = (order_sum - discount_amount).round(2)
     table << :separator
     table << ["", "Total", "$#{order_sum}"]
-    table << ["", "Discount", "$#{order_sum}"]
-    table << ["", "Grand Total", "$#{order_sum}"]
-    table_display = Terminal::Table.new :headings => ["Quantitiy", "Name", "Price"], :rows => table
+    table << :separator
+    table << ["", "Discount", "-$#{discount_amount}"]
+    table << :separator
+    table << ["", "Grand Total", "$#{order_total}"]
+    table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantitiy", "Items", "Price"], :rows => table
     puts "\n"
     return table_display
     puts "\n"
@@ -306,15 +310,15 @@ module Menu
                     puts "You will now proceed to the payment section."
                     puts "Please enter any promotional discount code or employee discount code. Otherwise enter 'no'"
                         while promo_code = gets.chomp
-                            if promo_code == "employee discount"
+                            if promo_code.downcase == "employee discount"
                                 discount = 0.15
-                                puts "Your employee discount of 15% =off final order has been added to your order."
+                                puts "Your employee discount of 15% off final order has been added to your order."
                                 break
-                            elsif promo_code == "save the kids"
+                            elsif promo_code.downcase == "save the kids"
                                 discount = 0.10
-                                puts "Save the Kids promotional discount of 10% off has been added to your order."
+                                puts "Save the Kids promotional discount of 10% off final order has been added to your order."
                                 break
-                            elsif promo_code == "no"
+                            elsif promo_code.downcase == "no"
                                 discount = 0
                                 puts "Proceeding to payment."
                                 break
@@ -332,7 +336,8 @@ module Menu
                         # throw(:end)
                     end
                     if cust_name.order.length > 0
-                        checkout_table(cust_name.order, cust_name.order_cost, discount)
+                        puts discount
+                        puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
                     end
 
                     

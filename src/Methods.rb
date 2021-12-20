@@ -1,7 +1,11 @@
 def help
+    puts "\n"
     puts "The FEED ME app is a simple app that will take your order and send that information to the kitchen for your order to be prepared."
+    puts "\n"
     puts "Please follow the dialog intructions as you go along until your receipt is printed for your order to to confirmed."
+    puts "\n"
     puts "If you require additional assistance, please ask our friendly staff your help."
+    puts "\n"
 end
 
 def intro
@@ -20,13 +24,10 @@ def create_list_table(table1, table2)
 end
 
 def cust_table(cart, order_prices)
-    # items_count = table1.tally
-    # prices_count = table2.tally
     multiple = cart.values
     items = cart.keys
     prices = order_prices.keys.map(&:to_f)
     prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
-    # total_arrray = multiple.zip(items, prices_total)
     table = []
     multiple.zip(items, prices_total).each do |multiple, item, price|
         table << ["#{multiple}x", item, "$#{price.round(2)}"]
@@ -36,6 +37,7 @@ def cust_table(cart, order_prices)
     table_display = Terminal::Table.new :headings => ["Quantitiy", "Name", "Price"], :rows => table
     puts "\n"
     return table_display
+    puts "\n"
 end
 
 def invalid_input(message)
@@ -124,7 +126,6 @@ module Menu
                 when 1
                     clear
                     Menu.display_menu
-                    #* reset variable if loop reentered
                     info = false
                     puts "Would you like to know more about any of these items? (yes/no)"
                     mark
@@ -133,9 +134,10 @@ module Menu
                         clear
                         Menu.display_menu
 
-                        #* additional desciption option confirmed
+                        #* additional desciption option [YES]
                         if info.downcase == "yes"
                             info_section = false
+                            puts "Please input the numbers for the item you wish to know more about. when you wish to return, please input 'cancel'"
                             mark
 
                             #* Menu additional description loop [START]
@@ -162,12 +164,13 @@ module Menu
                                 
                                 else
                                     invalid_input("Please Please input the number next to items to make your selection or cancel")
+                                    puts "\n"
                                     mark
                                 end
                             #* Menu additional description loop [END]
                             end
 
-                        #* Additional description option declined
+                        #* Additional description option [NO]
                         elsif info.downcase == "no"
                             puts "Please select the items you would like to add to your cart."
                             puts "Input 'cancel' if you would like to return to the main menu."
@@ -198,14 +201,14 @@ module Menu
                                     #* [ASK] to add additional items [START]
                                     while shopping_again = gets.chomp
 
-                                        #* if yes then return to Ordering loop [START]
+                                        #* if [YES] then return to Ordering loop [START]
                                         if shopping_again.downcase == "yes"
                                             clear
                                             Menu.display_menu
                                             Menu.ask_order_select
                                             break
 
-                                        #* if no then return to Menu loop [START]
+                                        #* if [NO] then return to Menu loop [START]
                                         elsif shopping_again.downcase == "no"
                                             puts "Returning to main menu."
                                             puts "\n"
@@ -272,17 +275,21 @@ module Menu
 
     def Menu.exit
         puts "Are you sure you want to cancel? (Yes/No)"
+        puts "\n"
         mark
         cancel = false
         while cancel = gets.chomp
             if cancel.downcase == "no"
+                clear
                 Menu.display_options
                 break
             elsif cancel.downcase == "yes"
+                clear
                 puts "We're sorry to see you go! Please come back if you feel the need for some original food."
                 exit!
             else
                 puts "Invalid Input! Please enter yes or no"
+                puts "\n"
                 mark
             end
         end

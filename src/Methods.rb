@@ -19,12 +19,12 @@ def create_list_table(table1, table2)
     return table_display
 end
 
-def cust_table(table1, table2)
-    items_count = table1.tally
-    prices_count = table2.tally
-    multiple = prices_count.values
-    items = items_count.keys
-    prices = prices_count.keys.map(&:to_f)
+def cust_table(cart, order_prices)
+    # items_count = table1.tally
+    # prices_count = table2.tally
+    multiple = cart.values
+    items = cart.keys
+    prices = order_prices.keys.map(&:to_f)
     prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
     # total_arrray = multiple.zip(items, prices_total)
     table = []
@@ -52,11 +52,6 @@ end
 def mark
     print "> "
 end
-
-#*table summary function - potential implementation
-# - .tally array with food -> results in hash with food items and value counts
-# - .tally array with prices
-# - convert tally hash into arrays
 
 
 module Menu
@@ -157,11 +152,21 @@ module Menu
                             shopping = false
                             while shopping = gets.chomp
                                 if shopping.to_i > 0 && shopping.to_i <= @@food.length
-                                    cust_name.order << @@food[shopping.to_i - 1]
-                                    cust_name.order_cost << @@price[shopping.to_i - 1]
+                                    if !cust_name.order.key?(@@food[shopping.to_i - 1])
+                                        cust_name.order[@@food[shopping.to_i - 1]] = 1
+                                        cust_name.order_cost[@@price[shopping.to_i - 1]] = 1
+
+                                    else
+                                        cust_name.order[@@food[shopping.to_i - 1]] += 1
+                                        cust_name.order_cost[@@price[shopping.to_i - 1]] += 1
+                                    end
+                                    # cust_name.order << @@food[shopping.to_i - 1]
+                                    # cust_name.order_cost << @@price[shopping.to_i - 1]
                                     puts "#{@@food[shopping.to_i - 1]} has been added to your cart."
                                     # clear
                                     # Menu.display_menu
+                                    pp cust_name.order
+                                    pp cust_name.order_cost
                                     puts "Would you like to order something else? (yes/no)"
                                     mark
                                     shopping_again = false

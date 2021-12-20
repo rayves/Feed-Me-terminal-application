@@ -14,8 +14,8 @@ class Customer
 
   def initialize(name)
     @name = name
-    @order = []
-    @order_cost = []
+    @order = {}
+    @order_cost = {}
     @cust_id = rand(0..1000000)
   end
 

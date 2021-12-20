@@ -55,7 +55,7 @@ end
 
 
 module Menu
-    #* Module variables used in caontained methods
+    #* Module variables used in contained methods
     MENU = './data/menu.csv'
     @@menu = CSV.parse(File.read(MENU), headers: true)
     @@food = @@menu.by_col[0]
@@ -89,10 +89,12 @@ module Menu
         puts "\n"
         mark
     end
-        
+    
+#* main menu method
     def Menu.menu
         begin
         mark
+        #* get customer name for customer class initialization
         cust_name = gets.chomp
         if name.empty? || name.nil?
             raise NoNameError
@@ -108,27 +110,41 @@ module Menu
         puts "Welcome #{cust_name.name.capitalize}! what would you like to do?"
         puts "\n"
 
+        #* Display menu options for customer selection/navigation
         Menu.display_options
 
+        #* Menu loop [START]
         while options = gets.chomp.to_i
+
+            #* return point for nexted loops
             catch(:end) do
                 case options
+
+                #* ORDER ITEM SELECTION
                 when 1
                     clear
                     Menu.display_menu
+                    #* reset variable if loop reentered
                     info = false
                     puts "Would you like to know more about any of these items? (yes/no)"
                     mark
+                    #* Menu [ASK] additional description loop [START]
                     while info = gets.chomp
                         clear
                         Menu.display_menu
+
+                        #* additional desciption option confirmed
                         if info.downcase == "yes"
                             info_section = false
                             mark
+
+                            #* Menu additional description loop [START]
                             while info_section = gets.chomp
                                 clear
                                 Menu.display_menu
                                 puts "Please input the numbers for the item you wish to know more about. when you wish to return, please input 'cancel'"
+
+                                #*if input is within valid number parameters display the corresponding menu item description
                                 if info_section.to_i > 0 && info_section.to_i <= @@food.length
                                     puts "\n"
                                     puts @@food[info_section.to_i - 1]
@@ -136,58 +152,76 @@ module Menu
                                     puts @@description[info_section.to_i - 1]
                                     puts "\n"
                                     mark
+
+                                #* if input is "cancel" return to Menu ASK additional description loop start
                                 elsif info_section.downcase == "cancel"
                                     clear
                                     Menu.display_menu
                                     puts "Would you like to know more about any of these items? (yes/no)"
                                     break
+                                
                                 else
                                     invalid_input("Please Please input the number next to items to make your selection or cancel")
                                     mark
                                 end
+                            #* Menu additional description loop [END]
                             end
+
+                        #* Additional description option declined
                         elsif info.downcase == "no"
                             puts "Please select the items you would like to add to your cart."
                             puts "Input 'cancel' if you would like to return to the main menu."
                             shopping = false
+
+                            #* Ordering loop [START]
                             while shopping = gets.chomp
+                                #*if input is within valid number parameters add item to Customer class order and order_cost hashes
                                 if shopping.to_i > 0 && shopping.to_i <= @@food.length
+
+                                    #* if menu item does not exist then create for 1
                                     if !cust_name.order.key?(@@food[shopping.to_i - 1])
                                         cust_name.order[@@food[shopping.to_i - 1]] = 1
                                         cust_name.order_cost[@@price[shopping.to_i - 1]] = 1
-
+                                    
+                                    #* if menu item already exists then add 1 to existing item
                                     else
                                         cust_name.order[@@food[shopping.to_i - 1]] += 1
                                         cust_name.order_cost[@@price[shopping.to_i - 1]] += 1
                                     end
-                                    # cust_name.order << @@food[shopping.to_i - 1]
-                                    # cust_name.order_cost << @@price[shopping.to_i - 1]
                                     puts "#{@@food[shopping.to_i - 1]} has been added to your cart."
-                                    # clear
-                                    # Menu.display_menu
                                     pp cust_name.order
                                     pp cust_name.order_cost
                                     puts "Would you like to order something else? (yes/no)"
                                     mark
                                     shopping_again = false
+
+                                    #* [ASK] to add additional items [START]
                                     while shopping_again = gets.chomp
+
+                                        #* if yes then return to Ordering loop [START]
                                         if shopping_again.downcase == "yes"
                                             clear
                                             Menu.display_menu
                                             Menu.ask_order_select
                                             break
+
+                                        #* if no then return to Menu loop [START]
                                         elsif shopping_again.downcase == "no"
                                             puts "Returning to main menu."
                                             puts "\n"
                                             Menu.display_options
                                             throw(:end)
+
                                         else
                                             puts "Invalid Input! Please enter yes or no"
                                             puts "\n"
                                             puts "would you like to order something else?"
                                             mark
                                         end
+                                    #* [ASK] to add additional items [END]
                                     end
+                                
+                                #* if input = cancels then return to Menu loop [START]
                                 elsif shopping.downcase == "cancel"
                                     puts "\n"
                                     puts "Returning to main menu."
@@ -199,27 +233,35 @@ module Menu
                                     invalid_input("Please Please input the number next to items to make your selection.")
                                     Menu.display_menu
                                 end
+                            #* Ordering Loop [END]
                             end
                         else
                             invalid_input("Please input yes or no")
                             puts "\n"
                             puts "Would you like to know more about any of these items? (yes/no)"
                         end
+                    #* Menu [ASK] additional description loop [END]
                     end
+
+                #* DISPLAY ORDERS CART OPTION
                 when 2
-                    # show_order = []
-                    # cust_name.order.zip(cust_name.order_cost).each_with_index do |(food, price), index|
-                    #     show_order << [index + 1, food, "$#{price}"]
-                    # end
-                    # pp show_order
                     puts cust_table(cust_name.order, cust_name.order_cost)
                     Menu.display_options
+                
+                #* DELETE ITEM FROM ORDER OPTION
                 when 3
+
+                #* CHECKOUT OPTION
                 when 4
+                
+                #* HELP OPTION
                 when 5
                     help
+                
+                #* EXIT PROGRAM OPTION
                 when 6
                     Menu.exit
+
                 else
                     puts "Invalid Input! Please enter one of the numbers listed in order to proceed"
                     Menu.display_options
@@ -227,51 +269,6 @@ module Menu
             end
         end
     end
-
-    # def Menu.order
-    #     system("clear")
-    #     puts Menu.display_menu
-    #     puts "What would you like to order? Please input the number next to items to make your selection. Otherise if you would like to go back, please enter 'cancel'"
-    #     mark
-    #     shopping = false
-    #     while shopping = gets.chomp.to_i
-    #         if shopping > 0 && shopping < @@food.length
-    #             name.order << @@food[shopping - 1]
-    #             name.order_cost << @@price[shopping - 1]
-    #             puts "#{@@food[shopping]} has been added to your cart."
-    #             break
-    #         elsif shopping.downcase == "cancel"
-    #             puts "Returning to main menu."
-    #             puts "\n"
-    #             break
-    #         else
-    #             "Invalid Input. Please Please input the number next to items to make your selection."
-    #             puts Menu.display_menu
-    #             mark
-    #         end
-    #     end
-    # end
-
-    # def Menu.order_again
-    #     system("clear")
-    #     puts "would you like to order something else?"
-    #     mark
-    #     shopping_again = false
-    #     while shopping_again = gets.chomp
-    #         if shopping_again.downcase == "yes"
-    #             Menu.order
-    #         elsif shopping_again.downcase == "no"
-    #             puts "Returning to main menu."
-    #             puts "\n"
-    #             break
-    #         else
-    #             puts "Invalid Input! Please enter yes or no"
-    #             puts "\n"
-    #             puts "would you like to order something else?"
-    #             mark
-    #         end
-    #     end
-    # end
 
     def Menu.exit
         puts "Are you sure you want to cancel? (Yes/No)"

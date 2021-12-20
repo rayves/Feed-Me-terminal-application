@@ -334,7 +334,10 @@ module Menu
                 break
             elsif cancel.downcase == "yes"
                 clear
+                artii = Artii::Base.new font: 'big'
+                puts  artii.asciify("FEED ME!")
                 puts "We're sorry to see you go! Please come back if you feel the need for some original food."
+                puts "\n"
                 exit!
             else
                 puts "Invalid Input! Please enter yes or no"

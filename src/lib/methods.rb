@@ -9,9 +9,10 @@ def help
 end
 
 def intro
-    clear
-    puts "Welcome to FEED ME!"
+    artii = Artii::Base.new font: 'big'
+    puts  artii.asciify("Welcome to FEED ME!")
     puts "Please tell me your name so we can start your order."
+    # puts "Please tell me your name so we can start your order."
 end
 
 def calculate_grand_total(cart, order_prices, discount)

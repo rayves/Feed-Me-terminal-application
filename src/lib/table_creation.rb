@@ -53,6 +53,7 @@ def checkout_table(cart, order_prices, cust_id, discount)
 end
 
 def receipt(cart, order_prices, cust_id, discount, payment)
+    artii = Artii::Base.new font: 'big'
     multiple = cart.values
     items = cart.keys
     prices = order_prices.keys.map(&:to_f)
@@ -78,9 +79,16 @@ def receipt(cart, order_prices, cust_id, discount, payment)
 
     table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantity", "Items", "Price"], :rows => table
 
-    File.open("./data/Receipt No. #{cust_id}.txt", 'w+') { |file| file.write(table_display) }
+    File.open("./data/Receipt No. #{cust_id}.txt", 'w+') do |file|
+        file.write(
+            artii.asciify("FEED ME!"),
+            "\n",
+            table_display
+        )
+    end
 
     puts "\n"
+    puts artii.asciify("FEED ME!")
     return table_display
     puts "\n"
 end

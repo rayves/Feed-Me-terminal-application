@@ -9,6 +9,7 @@ def help
 end
 
 def intro
+    clear
     puts "Welcome to FEED ME!"
     puts "Please tell me your name so we can start your order."
 end

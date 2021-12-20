@@ -15,19 +15,26 @@ require_relative './lib/menu'
 # menu = CSV.parse(File.read(MENU), headers: true)
 
 
+
+
+
 #Main Program
+if ARGV.length > 0
+    flag, *rest = ARGV
+    ARGV.clear
+    case flag
+    when '-help' || '-h'
+        help 
+        exit!
+    when 'show_menu'
+        puts Menu.display_menu
+        exit!
+    else
+        puts "Invalid argument,  see README fo valid arguments"
+        puts "\n"
+        exit!
+    end
+end
+
 intro
 Menu.menu
-
-
-
-
-
-
-
-
-
-
-# while gets.chomp
-#     case 1
-                                                            

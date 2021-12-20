@@ -43,17 +43,20 @@ module Menu
         mark
         #* get customer name for customer class initialization
         cust_name = gets.chomp
-        if name.empty? || name.nil?
+        if cust_name.empty? || cust_name.nil?
             raise NoNameError
         end
         rescue NoNameError
+            clear
             puts "Name cannot be empty. Please input your name."
-            mark
+            puts "\n"
+            puts "Please tell me your name so we can start your order."
             retry
         rescue
             puts "An Error has occured."
         end
         cust_name = Customer.new(cust_name)
+        clear
         puts "Welcome #{cust_name.name.capitalize}! what would you like to do?"
         puts "\n"
 
@@ -193,8 +196,16 @@ module Menu
 
                 #* DISPLAY ORDERS CART OPTION
                 when 2
-                    puts cust_table(cust_name.order, cust_name.order_cost)
-                    Menu.display_options
+                    if cust_name.order.length > 0
+                        puts cust_table(cust_name.order, cust_name.order_cost)
+                        Menu.display_options
+                    else
+                        clear
+                        puts "Your cart if empty."
+                        puts "\n"
+                        Menu.display_options
+                    end
+
                 
                 # #* DELETE ITEM FROM ORDER OPTION
                 # when 3
@@ -223,10 +234,12 @@ module Menu
                 #* CHECKOUT OPTION
                 when 3
                     clear
+                    #* If cart [IS NOT] empty then proceed
                     if cust_name.order.length > 0
                     puts "Your order is confirmed."
                     puts "You will now proceed to the payment section."
                     puts "Please enter any promotional discount code or employee discount code. Otherwise enter 'no'"
+                        #* Discount coupon loop [START]
                         while promo_code = gets.chomp
                             if promo_code.downcase == "employee discount"
                                 discount = 0.15
@@ -243,7 +256,10 @@ module Menu
                             else
                                 invalid_input("Please only enter the promotional discount code, employee discount code, or no.")
                             end
+                        #* Discount coupon loop [END]
                         end
+
+                    #* If cart [IS] empty then return to Menu loop [START]
                     else
                         clear
                         puts "Your cart is empty."
@@ -251,7 +267,6 @@ module Menu
                         puts "Please select items to add to your cart by navigating through the Order selection before you can checkout."
                         puts "\n"
                         Menu.display_options
-                        # throw(:end)
                     end
                     if cust_name.order.length > 0
                         puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
@@ -328,35 +343,5 @@ module Menu
             end
         end
     end
-
-    def Menu.payment(cart, order_prices, discount)
-        multiple = cart.values
-        items = cart.keys
-        prices = order_prices.keys.map(&:to_f)
-        prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
-        table = []
-        multiple.zip(items, prices_total).each do |multiple, item, price|
-            table << ["#{multiple}x", item, "$#{price.round(2)}"]
-        end
-        order_sum = prices_total.sum.round(2)
-        discount_amount = (order_sum * discount).round(2)
-        order_total = (order_sum - discount_amount).round(2)
-        table << :separator
-        table << ["", "Total", "$#{order_sum}"]
-        table << ["", "Discount", "-$#{discount_amount}"]
-        table << :separator
-        table << ["", "Grand Total", "$#{order_total}"]
-        table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantity", "Items", "Price"], :rows => table
-        puts "\n"
-        return table_display
-        puts "\n"
-    end    
-
-    # def Menu.order_completed
-    #     puts "Your order is being processed."
-    #     puts "Please take this receipt while your order is being prepared."
-    #     puts "Thank you for choosing us to full your belly."
-    #     puts "We hope you enjoy your meal and have a good day."
-    # end
     
 end

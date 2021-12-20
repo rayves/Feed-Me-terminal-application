@@ -26,7 +26,7 @@ def cust_table(table1, table2)
     items = items_count.keys
     prices = prices_count.keys.map(&:to_f)
     prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
-    total_arrray = multiple.zip(items, prices_total)
+    # total_arrray = multiple.zip(items, prices_total)
     table = []
     multiple.zip(items, prices_total).each do |multiple, item, price|
         table << ["#{multiple}x", item, "$#{price.round(2)}"]

@@ -45,26 +45,37 @@ def checkout_table(cart, order_prices, cust_id, discount)
     items = cart.keys
     prices = order_prices.keys.map(&:to_f)
     prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
+    order_sum = prices_total.sum.round(2)
+    discount_amount = (order_sum * discount).round(2)
+    order_total = (order_sum - discount_amount).round(2)
+    
     table = []
     multiple.zip(items, prices_total).each do |multiple, item, price|
         table << ["#{multiple}x", item, "$#{price.round(2)}"]
     end
-    order_sum = prices_total.sum.round(2)
-    discount_amount = (order_sum * discount).round(2)
-    order_total = (order_sum - discount_amount).round(2)
+
     table << :separator
     table << ["", "Total", "$#{order_sum}"]
-    table << :separator
     table << ["", "Discount", "-$#{discount_amount}"]
     table << :separator
     table << ["", "Grand Total", "$#{order_total}"]
+
     table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantitiy", "Items", "Price"], :rows => table
     puts "\n"
     return table_display
     puts "\n"
 end
     
-
+def calculate_grand_total(cart, order_prices, discount)
+    multiple = cart.values
+    items = cart.keys
+    prices = order_prices.keys.map(&:to_f)
+    prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
+    order_sum = prices_total.sum.round(2)
+    discount_amount = (order_sum * discount).round(2)
+    order_total = (order_sum - discount_amount).round(2)
+    return order_total
+end
 
 
 def invalid_input(message)
@@ -336,8 +347,36 @@ module Menu
                         # throw(:end)
                     end
                     if cust_name.order.length > 0
-                        puts discount
                         puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
+                        puts "Please see your confirmed order above."
+                        puts "Please enter a full number amount you wish to pay"
+                        begin
+                        mark
+                        while payment = Integer(gets.chomp)
+                            grand_total = calculate_grand_total(cust_name.order, cust_name.order_cost, discount)
+                            if payment == grand_total
+                                puts "Payment confirmed"
+                                break
+                            elsif payment > grand_total
+                                puts "Payment confirmed"
+                                puts "your change is $#{(payment.to_f - grand_total).round(2)}"
+                                break
+                            elsif payment < grand_total
+                                puts "Insufficient funds"
+                                puts "Please input an amount greater than the Grand Total of your order"
+                            else
+                                invalid_input("Please enter an amount you wish to pay")
+                            end
+                        end
+                        rescue ArgumentError
+                            puts "\n"
+                            puts "Please only enter full numbers"
+                            retry
+                        end
+                        puts "Your order is being processed."
+                        puts "Please take this receipt while your order is being prepared."
+                        puts "Thank you for choosing us to full your belly."
+                        puts "We hope you enjoy your meal and have a good day."
                     end
 
                     
@@ -384,5 +423,28 @@ module Menu
             end
         end
     end
+
+    def Menu.payment(cart, order_prices, discount)
+        multiple = cart.values
+        items = cart.keys
+        prices = order_prices.keys.map(&:to_f)
+        prices_total = prices.zip(multiple).map{|x,y| (x * y).round(2)}
+        table = []
+        multiple.zip(items, prices_total).each do |multiple, item, price|
+            table << ["#{multiple}x", item, "$#{price.round(2)}"]
+        end
+        order_sum = prices_total.sum.round(2)
+        discount_amount = (order_sum * discount).round(2)
+        order_total = (order_sum - discount_amount).round(2)
+        table << :separator
+        table << ["", "Total", "$#{order_sum}"]
+        table << ["", "Discount", "-$#{discount_amount}"]
+        table << :separator
+        table << ["", "Grand Total", "$#{order_total}"]
+        table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantitiy", "Items", "Price"], :rows => table
+        puts "\n"
+        return table_display
+        puts "\n"
+    end    
     
 end

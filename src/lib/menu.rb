@@ -62,7 +62,6 @@ module Menu
 
         #* Menu loop [START]
         while options = gets.chomp.to_i
-
             #* return point for nexted loops
             catch(:end) do
                 case options
@@ -105,11 +104,12 @@ module Menu
                                     clear
                                     Menu.display_menu
                                     puts "Would you like to know more about any of these items? (yes/no)"
+                                    mark
                                     break
                                 
                                 else
-                                    invalid_input("Please Please input the number next to items to make your selection or cancel")
                                     puts "\n"
+                                    invalid_input("Please input the number next to items to make your selection or cancel")
                                     mark
                                 end
                             #* Menu additional description loop [END]
@@ -119,6 +119,7 @@ module Menu
                         elsif info.downcase == "no"
                             puts "Please select the items you would like to add to your cart."
                             puts "Input 'cancel' if you would like to return to the main menu."
+                            mark
                             shopping = false
 
                             #* Ordering loop [START]
@@ -136,9 +137,10 @@ module Menu
                                         cust_name.order[@@food[shopping.to_i - 1]] += 1
                                         cust_name.order_cost[@@price[shopping.to_i - 1]] += 1
                                     end
+                                    clear
+                                    Menu.display_menu
                                     puts "#{@@food[shopping.to_i - 1]} has been added to your cart."
-                                    pp cust_name.order
-                                    pp cust_name.order_cost
+                                    puts "\n"
                                     puts "Would you like to order something else? (yes/no)"
                                     mark
                                     shopping_again = false
@@ -155,14 +157,16 @@ module Menu
 
                                         #* if [NO] then return to Menu loop [START]
                                         elsif shopping_again.downcase == "no"
+                                            clear
                                             puts "Returning to main menu."
                                             puts "\n"
                                             Menu.display_options
                                             throw(:end)
 
                                         else
-                                            puts "Invalid Input! Please enter yes or no"
-                                            puts "\n"
+                                            clear
+                                            Menu.display_menu
+                                            puts invalid_input("Please enter yes or no")
                                             puts "would you like to order something else?"
                                             mark
                                         end
@@ -171,33 +175,38 @@ module Menu
                                 
                                 #* if input = cancels then return to Menu loop [START]
                                 elsif shopping.downcase == "cancel"
-                                    puts "\n"
+                                    clear
                                     puts "Returning to main menu."
                                     puts "\n"
                                     Menu.display_options
                                     throw(:end)
                                     # break
                                 else
-                                    invalid_input("Please Please input the number next to items to make your selection.")
+                                    clear
                                     Menu.display_menu
+                                    invalid_input("Please Please input the number next to items to make your selection.")
+                                    mark
                                 end
                             #* Ordering Loop [END]
                             end
                         else
+                            clear
+                            Menu.display_menu
                             invalid_input("Please input yes or no")
-                            puts "\n"
                             puts "Would you like to know more about any of these items? (yes/no)"
+                            mark
                         end
                     #* Menu [ASK] additional description loop [END]
                     end
 
                 #* DISPLAY ORDERS CART OPTION
                 when 2
+                    clear
                     if cust_name.order.length > 0
                         puts cust_table(cust_name.order, cust_name.order_cost)
+                        puts "\n"
                         Menu.display_options
                     else
-                        clear
                         puts "Your cart if empty."
                         puts "\n"
                         Menu.display_options
@@ -234,24 +243,33 @@ module Menu
                     #* If cart [IS NOT] empty then proceed
                     if cust_name.order.length > 0
                     puts "Your order is confirmed."
+                    puts "\n"
                     puts "You will now proceed to the payment section."
+                    puts "\n"
                     puts "Please enter any promotional discount code or employee discount code. Otherwise enter 'no'"
+                    puts "\n"
+                    mark
                         #* Discount coupon loop [START]
                         while promo_code = gets.chomp
                             if promo_code.downcase == "employee discount"
+                                clear
                                 discount = 0.15
                                 puts "Your employee discount of 15% off final order has been added to your order."
                                 break
                             elsif promo_code.downcase == "save the kids"
+                                clear
                                 discount = 0.10
                                 puts "Save the Kids promotional discount of 10% off final order has been added to your order."
                                 break
                             elsif promo_code.downcase == "no"
+                                clear
                                 discount = 0
                                 puts "Proceeding to payment."
                                 break
                             else
+                                clear
                                 invalid_input("Please only enter the promotional discount code, employee discount code, or no.")
+                                mark
                             end
                         #* Discount coupon loop [END]
                         end
@@ -267,52 +285,69 @@ module Menu
                     end
                     if cust_name.order.length > 0
                         puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
+                        puts "\n"
                         puts "Please see your confirmed order above."
-                        puts "Please enter a full number amount you wish to pay"
+                        puts "\n"
+                        puts "Please enter a full number amount you wish to pay."
                         begin
                         mark
                         while payment = Integer(gets.chomp)
                             grand_total = calculate_grand_total(cust_name.order, cust_name.order_cost, discount)
                             if payment == grand_total
-                                puts "Payment confirmed"
+                                clear
+                                puts "Payment confirmed."
                                 break
                             elsif payment > grand_total
-                                puts "Payment confirmed"
-                                puts "your change is $#{(payment.to_f - grand_total).round(2)}"
+                                clear
+                                puts "Payment confirmed."
+                                puts "\n"
+                                puts "Your change is $#{(payment.to_f - grand_total).round(2)}."
                                 break
                             elsif payment < grand_total && payment >= 0
-                                puts "Insufficient funds"
-                                puts "Please input an amount greater than the Grand Total of your order"
+                                clear
+                                puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
+                                puts "\n"
+                                puts "Insufficient funds."
+                                puts "\n"
+                                puts "Please input an amount greater than the Grand Total of your order."
+                                mark
                             else
-                                invalid_input("Please enter an amount you wish to pay")
+                                clear
+                                puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
+                                puts "\n"
+                                invalid_input("Please enter an amount you wish to pay.")
+                                mark
                             end
                         end
                         rescue ArgumentError
+                            clear
+                            puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
                             puts "\n"
-                            puts "Please only enter full numbers"
+                            puts "Please only enter full numbers."
+                            puts "\n"
+                            puts "Please enter a full number amount you wish to pay."
                             retry
                         end
                         puts "\n"
                         puts receipt(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount, payment)
                         puts "\n"
-                        puts "Your order is being processed."
-                        puts "Please take this receipt while your order is being prepared."
-                        puts "Thank you for choosing us to full your belly."
-                        puts "We hope you enjoy your meal and have a good day."
-                        exit!
+                        Menu.ordered_message
                     end
                 
                 #* HELP OPTION
                 when 4
+                    clear
                     help
+                    Menu.display_options
                 
                 #* EXIT PROGRAM OPTION
                 when 5
+                    clear
                     Menu.exit
 
                 else
                     clear
-                    invalid_input("Please enter one of the numbers listed in order to proceed")
+                    invalid_input("Please enter one of the numbers listed in order to proceed.")
                     Menu.display_options
                 end
             end
@@ -331,17 +366,29 @@ module Menu
                 break
             elsif cancel.downcase == "yes"
                 clear
-                artii = Artii::Base.new font: 'big'
-                puts  artii.asciify("FEED ME!")
+                puts title
                 puts "We're sorry to see you go! Please come back if you feel the need for some original food."
                 puts "\n"
                 exit!
             else
-                puts "Invalid Input! Please enter yes or no"
-                puts "\n"
+                clear
+                puts invalid_input("Please enter yes or no")
+                puts "Are you sure you want to cancel? (Yes/No)"
                 mark
             end
         end
+    end
+
+    def Menu.ordered_message
+        puts "Your order is being processed."
+        puts "\n"
+        puts "Please take this receipt while your order is being prepared."
+        puts "\n"
+        puts "Thank you for choosing us to full your belly."
+        puts "\n"
+        puts "We hope you enjoy your meal and have a good day."
+        puts "\n"
+        exit!
     end
     
 end

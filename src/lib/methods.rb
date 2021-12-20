@@ -1,5 +1,4 @@
 def help
-    puts "\n"
     puts "The FEED ME app is a simple app that will take your order and send that information to the kitchen for your order to be prepared."
     puts "\n"
     puts "Please follow the dialog intructions as you go along until your receipt is printed for your order to to confirmed."
@@ -8,9 +7,15 @@ def help
     puts "\n"
 end
 
+def title
+    artii = Artii::Base.new font: 'big'
+    return artii.asciify("FEED ME!").colorize(:red)
+end
+
 def intro
     artii = Artii::Base.new font: 'big'
-    puts  artii.asciify("Welcome to FEED ME!")
+    puts artii.asciify("Welcome to").colorize(:light_red)
+    puts title
     puts "Please tell me your name so we can start your order."
     # puts "Please tell me your name so we can start your order."
 end
@@ -28,8 +33,9 @@ end
 
 
 def invalid_input(message)
-    puts "Invalid Input."
-    puts message
+    puts "Invalid Input.".colorize(:red)
+    puts "\n"
+    puts message.colorize(:light_blue)
     puts "\n"
 end
 

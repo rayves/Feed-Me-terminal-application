@@ -30,5 +30,6 @@ if ARGV.length > 0
     end
 end
 
+clear
 intro
 Menu.menu

@@ -5,7 +5,6 @@ def create_list_table(menu_items, prices)
         table << [index + 1, food, "$#{price}"]
     end
     table_display = Terminal::Table.new :headings => ["Item No.", "Name", "Price"], :rows => table
-    puts "\n"
     return table_display
 end
 
@@ -21,9 +20,7 @@ def cust_table(cart, order_prices)
     table << :separator
     table << ["", "Total", "$#{prices_total.sum.round(2)}"]
     table_display = Terminal::Table.new :headings => ["Quantity", "Name", "Price"], :rows => table
-    puts "\n"
     return table_display
-    puts "\n"
 end
 
 def checkout_table(cart, order_prices, cust_id, discount)
@@ -47,9 +44,7 @@ def checkout_table(cart, order_prices, cust_id, discount)
     table << ["", "Grand Total", "$#{order_total}"]
 
     table_display = Terminal::Table.new :title => "Order No. #{cust_id}", :headings => ["Quantity", "Items", "Price"], :rows => table
-    puts "\n"
     return table_display
-    puts "\n"
 end
 
 def receipt(cart, order_prices, cust_id, discount, payment)
@@ -87,9 +82,7 @@ def receipt(cart, order_prices, cust_id, discount, payment)
         )
     end
 
-    puts "\n"
-    puts artii.asciify("FEED ME!")
+    puts artii.asciify("FEED ME!").colorize(:light_red)
     return table_display
-    puts "\n"
 end
     

@@ -86,7 +86,7 @@ This information is later referred to when displaying current order information 
 
 ### Deduction in Price With Specific Input
 
-This feature allows users to apply a discount code which will reduce the total cost of the user's order. The discount code is applied by assigning a discount variable depending on what the user inputs which will them be passed on to the final calculation.
+This feature allows users to apply a discount code which will reduce the total cost of the user's order. The discount code is applied by assigning a discount variable depending on what the user inputs which will be passed on to the final calculation, which is displayed during the payment process.
 
 1. After the user has completed the ordering process they can enter the checkout process by selecting it from the menu input.
    1. If the user's cart is empty the user will not be able to enter the process and be advised they can only proceed once they start ordering.
@@ -101,16 +101,32 @@ For this feature the user can input any amount which they would like to pay and 
 
 As the program cannot actually take payments, this is just a feature to showcase the program ability to make calculation and output that information in a stakeholder friendly way (Users seeing how much change they receive, Staff seeing if the user has paid, how much they have paid and how much change they received.)
 
+1. The user, after the discount code process, will be asked to input the amount they wish to pay. The user must input an amount equal to or greater than the grand total amount (total order cost - discount) in order to proceed.
+   1. If the user inputs an amount greater than the grand total then the difference, being change, will be displayed.
+   2. if the user inputs an amount equal to the grand total then payment will be confirmed with no change.
+   3. if the user inputs an amount less than the grand total then insufficient funds error will display advising that they must input an amount equal to or greater than the grand total amount.
+   4. if the user enters nothing, a string, or 0 then an error will be raised advising that the input amount must be a number and cannot be 0.
+   5. if the user enters a negative number than error will be raised advised invalid input and instruction displayed.
+
 ### Display Total Order With Items 
+
+After the user has inputted a valid payment the order will be confirmed and a final receipt with all the order details including, quantity, ordered items, subtotaled prices, discount amount, payment amount, and grand total will be displayed under the restaurant title.
+
+A final thank you message will be displayed confirming the order is being prepared.
 
 ### Export Final Order Receipt to File 
 
+When the user gets through the final process above, the virtual receipt which is display at the end is also exported into a text file for record keeping purposes. Ideally the receipt will be automatically printed for the user and sent to the kitchen for preparation.
+
+The file is created by using the unique customer id that is generated after the user inputs their name so new customers will all have different customer ids avoiding any overwriting of receipts.
 ### Features for future updates
-#### Customer item removal 
+#### Customer item removal
+
+The ability for the user to remove an item from the 'cart' was originally planned however was removed due to time constraints as it is not absolutely essential as at this point the user can restart the app to start their order again. However this feature is a very important quality of life feature that would definitely provide the users with a more satisfied experience.
 
 #### Menu item manipulation
 
-
+Another quality of life feature would be to be able to change menu item ingredients as this would contribute significantly for accessability purposes, being able to cater to a wider range of users. However this feature was avoided as it is a quite complicated feature and with the time constraints would not be able to be fulfilled.
 ## Control Flow Diagram
 
 ### Original Sitemap
@@ -132,15 +148,9 @@ The exit option was also added during the implementation process as the thought 
 ### Updated Sitemap
 
 ![](docs/sitemap_updated.png)
-
-
-
-- show the workflow/logic and/or integration of the features in your application for each feature.
-- utilise a recognised format or set of conventions for a control flow diagram, such as UML.
-
 ## Implementation Plan
 
-
+### Planning
 
 Tracking of the implementation plan has been done through [Trello](https://trello.com/b/ahY5LGQu/feed-me-fast-food-app).
 # Usage & Install Instructions

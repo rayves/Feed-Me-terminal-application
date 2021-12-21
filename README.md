@@ -110,7 +110,7 @@ As the program cannot actually take payments, this is just a feature to showcase
 
 ### Display Total Order With Items 
 
-After the user has inputted a valid payment the order will be confirmed and a final receipt with all the order details including, quantity, ordered items, subtotaled prices, discount amount, payment amount, and grand total will be displayed under the restaurant title.
+After the user has inputted a valid payment the order will be confirmed and a final receipt with all the order details including, quantity, ordered items, sub-totaled prices, discount amount, payment amount, and grand total will be displayed under the restaurant title.
 
 A final thank you message will be displayed confirming the order is being prepared.
 
@@ -126,7 +126,7 @@ The ability for the user to remove an item from the 'cart' was originally planne
 
 #### Menu item manipulation
 
-Another quality of life feature would be to be able to change menu item ingredients as this would contribute significantly for accessability purposes, being able to cater to a wider range of users. However this feature was avoided as it is a quite complicated feature and with the time constraints would not be able to be fulfilled.
+Another quality of life feature would be to be able to change menu item ingredients as this would contribute significantly for accessibility purposes, being able to cater to a wider range of users. However this feature was avoided as it is a quite complicated feature and with the time constraints would not be able to be fulfilled.
 ## Control Flow Diagram
 
 ### Original Sitemap
@@ -153,6 +153,27 @@ The exit option was also added during the implementation process as the thought 
 ### Planning
 
 Tracking of the implementation plan has been done through [Trello](https://trello.com/b/ahY5LGQu/feed-me-fast-food-app).
+
+During the implementation process the base features were prioritized first as they were essential for the operation of the program. The program was then refactered with additional features so they the programs functionality was cleaner and more efficient.
+
+
+![](docs/Trello1.PNG)
+![](docs/Trello2.PNG)
+![](docs/Trello3.PNG)
+![](docs/Trello4.PNG)
+![](docs/Trello5.PNG)
+![](docs/Trello_display_additional_information.PNG)
+![](docs/Trello_gems.PNG)
+![](docs/Trello_importmenu.PNG)
+![](docs/Trello_payment_feature.PNG)
+![](docs/Trello_receipt_feature.PNG)
+![](docs/Trello_slidedeck.PNG)
+![](docs/Trello_total_order.PNG)
+![](docs/Trello_exit.PNG)
+![](docs/Trello_create_customer.PNG)
+![](docs/Trello_designtests.PNG)
+![](docs/Trello_promo_code.PNG)
+
 # Usage & Install Instructions
 
 ## Dependencies
@@ -234,3 +255,7 @@ Within the program when prompted to input a promotional discount code or an empl
 ![](docs/screen1.png)
 ![](docs/screen2.png)
 ![](docs/screen3.png)
+![](docs/screen4.png)
+![](docs/screen5.png)
+![](docs/screen6.png)
+![](docs/screen7.png)

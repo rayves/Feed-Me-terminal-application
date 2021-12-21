@@ -343,7 +343,7 @@ module Menu
                             exit!
                         end
                         puts "\n"
-                        puts receipt(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount, payment)
+                        puts receipt(cust_name.order, cust_name.order_cost, cust_name.cust_id, cust_name.name, discount, payment)
                         puts "\n"
                         Menu.ordered_message
                     end

@@ -47,7 +47,7 @@ def checkout_table(cart, order_prices, cust_id, discount)
     return table_display
 end
 
-def receipt(cart, order_prices, cust_id, discount, payment)
+def receipt(cart, order_prices, cust_id, cust_name, discount, payment)
     artii = Artii::Base.new font: 'big'
     multiple = cart.values
     items = cart.keys
@@ -78,7 +78,10 @@ def receipt(cart, order_prices, cust_id, discount, payment)
         file.write(
             artii.asciify("FEED ME!"),
             "\n",
-            table_display
+            table_display,
+            "\n",
+            "\n",
+            "Thanks for ordering with us #{cust_name.capitalize}!"
         )
     end
 

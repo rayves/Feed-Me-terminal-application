@@ -127,11 +127,11 @@ The discount portion of the sitemap operates in the same manner however its just
 
 The exit option was also added during the implementation process as the thought of what if a User walks into the restaurant, doesn't like what they see and walk out came up. So the exit option allows the user to cancel their order with no details being kept, so the next user can order.
 
-![](docs\sitemap_original.png)
+![](docs/sitemap_original.png)
 
 ### Updated Sitemap
 
-![](docs\sitemap_updated.png)
+![](docs/sitemap_updated.png)
 
 
 
@@ -221,10 +221,10 @@ Within the program when prompted to input a promotional discount code or an empl
 
 # Screens
 
-![](docs\screen1.png)
-![](docs\screen2.png)
-![](docs\screen3.png)
-![](docs\screen4.png)
-![](docs\screen5.png)
-![](docs\screen6.png)
-![](docs\screen7.png)
+![](docs/screen1.png)
+![](docs/screen2.png)
+![](docs/screen3.png)
+![](docs/screen4.png)
+![](docs/screen5.png)
+![](docs/screen6.png)
+![](docs/screen7.png)

@@ -35,14 +35,14 @@ Customers can use the app by navigating through a simple interface which will di
 
 ## Features & User interaction
 
-1. Customer name input 
+### Customer name input 
    
 For a personalized experience the program will ask for the users name which will be displayed with a welcome message if the name if confirmed.
 
    1. Upon starting the application the program will request the users name and the user must enter any name to continue.
    2. if no name is enter an error will be raised requesting a name in order to continue.
 
-1. Menu Options
+### Menu Options
 
     Displays menu options to navigate between the various features.
 
@@ -54,14 +54,14 @@ For a personalized experience the program will ask for the users name which will
     4. If 4 is selected a help message will display advising the user how the app works.
     5. If 5 is selected quit feature will begin.
 
-2. Database Menu Items Display
+### Database Menu Items Display
 
 Displays menu items for the user to choose and add to their order.
 
    1. The program imports in a csv with the name, description, price, and ingredients, and stores this information in an array waiting to be manipulated.
    2. The name, description and prices will then be displayed in a user friendly way in a table using the [Terminal Table](https://github.com/tj/terminal-table/) Ruby gem.
 
-3. Display further description of menu
+### Display Further Description of Menu
    
    This feature displays a description of each of the menu items that is selected by the user.
 
@@ -70,30 +70,49 @@ Displays menu items for the user to choose and add to their order.
    3. Once done they can input 'cancel' to return to the ordering menu where they will be prompted the same question whether they would like to read further details on each menu item
    4. if anything other than the above is entered an invalid input message will be display, then advising the correct input.
 
-4. Customer order selection 
+### Customer order selection 
 
     This feature is where the ordering of items actually begins. Users select the item they wish to order by inputting the number next to the menu item and the item is added to the virtual 'cart'.
 
     1. After entering 'no' to wanting to see additional information on the menu items, the user can being selecting items they wish to add to their
 
-5. Customer item removal 
+### Orders Database 
 
-6. Orders Database 
+### Deduction in Price With Specific Input
 
-7.  Payment by way of input 
+### Payment By Way of Input 
 
-8. reduction in price with Special input 
 
-9.  Display total order with items 
+### Display Total Order With Items 
 
-10. Output final order with unique customer I.D. to file 
- 
-## User Interaction and Experience
-- how the user will find out how to interact with / use each feature
-- how the user will interact with / use each feature
-- how errors will be handled by the application and displayed to the user
+### Export Final Order Receipt to File 
+
+### Features for future updates
+#### Customer item removal 
+
+#### Menu item manipulation
+
 
 ## Control Flow Diagram
+
+### Original Sitemap
+
+The original sitemap was created during the initial planning phase of the  development process. The menu item removal feature shown is later removed during the implementation process in the interest of time. The feature will be added in a future update.
+
+The loop structure was also updated so that the display menu item description feature is contained within its own loop as to quickly display the description of the selected menu items. When the User is done looking at each of the items they can end the description loop and begin the ordering loop.
+
+This change was so the interface behaves more like a menu where Users look at what the menu items are before they orde instead of asking about each item as they order.
+
+This would improve user experience as well as they would not have to constantly input no if they do not want to know more about each item they are selecting to add to their 'cart'.
+
+![](docs\sitemap_original.png)
+
+### Updated Sitemap
+
+![](docs\sitemap_updated.png)
+
+
+
 - show the workflow/logic and/or integration of the features in your application for each feature.
 - utilise a recognised format or set of conventions for a control flow diagram, such as UML.
 

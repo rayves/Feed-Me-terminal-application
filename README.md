@@ -143,12 +143,6 @@ The exit option was also added during the implementation process as the thought 
 
 
 Tracking of the implementation plan has been done through [Trello](https://trello.com/b/ahY5LGQu/feed-me-fast-food-app).
-
-# Utilization and Install Instructions
-- steps to install the application
-- any dependencies required by the application to operate
-- any system/hardware requirements
-
 # Usage & Install Instructions
 
 ## Dependencies

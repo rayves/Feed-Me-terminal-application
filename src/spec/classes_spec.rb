@@ -4,7 +4,6 @@ describe 'Customer' do
 
     before(:each) do
         @cust_name = Customer.new("name")
-        rand(4563876)
     end
 
     it "should be an instance of a Customer" do
@@ -22,10 +21,6 @@ describe 'Customer' do
 
     it "should have order hash" do
         expect(@cust_name.order_cost).to be_an_instance_of(Hash)
-    end
-
-    it "should be able to take in orders" do
-        @cust_name
     end
 
 end

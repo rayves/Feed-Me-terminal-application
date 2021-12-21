@@ -12,7 +12,7 @@ require_relative './lib/menu'
 
 
 
-#Main Program
+#ARGV
 if ARGV.length > 0
     flag, *rest = ARGV
     ARGV.clear
@@ -30,6 +30,7 @@ if ARGV.length > 0
     end
 end
 
+#Main Program
 clear
 intro
 Menu.menu

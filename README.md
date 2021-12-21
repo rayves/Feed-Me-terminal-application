@@ -44,15 +44,16 @@ For a personalized experience the program will ask for the users name which will
 
 ### Menu Options
 
-    Displays menu options to navigate between the various features.
+Displays menu options to navigate between the various features.
 
-    1. If 1 is selected the user will enter the Ordering Feature.
-    2. If 2 is selected a table with the users 'cart' will display - showing the current items selected for order.
-       1. if there are no items in the 'cart'. Message "Cart is empty will display"
-    3. If 3 is selected a the user will enter the Checkout feature
-       1. if there are no items in the 'cart'. Message "cart is empty will display" and prompt user to start ordering and add items to the cart in order to proceed.
-    4. If 4 is selected a help message will display advising the user how the app works.
-    5. If 5 is selected quit feature will begin.
+  1. If 1 is selected the user will enter the Ordering Feature.
+  2. If 2 is selected a table with the users 'cart' will display - showing the current items selected for order.
+     1. If there are no items in the 'cart'. Message "Cart is empty will display"
+  3. If 3 is selected a the user will enter the Checkout feature
+     1. If there are no items in the 'cart'. Message "cart is empty will display" and prompt user to start ordering and add items to the cart in order to proceed.
+  4. If 4 is selected a help message will display advising the user how the app works
+  5. If 5 is selected quit feature will begin.
+  6. If the user inputs anything but the above an error will occur advising they should input one of the menu numbers to proceed.
 
 ### Database Menu Items Display
 
@@ -72,16 +73,33 @@ Displays menu items for the user to choose and add to their order.
 
 ### Customer order selection 
 
-    This feature is where the ordering of items actually begins. Users select the item they wish to order by inputting the number next to the menu item and the item is added to the virtual 'cart'.
+This feature is where the ordering of items actually begins. Users select the item they wish to order by inputting the number next to the menu item and the item is added to the virtual 'cart'.
 
-    1. After entering 'no' to wanting to see additional information on the menu items, the user can being selecting items they wish to add to their
-
+  1. After entering 'no' to wanting to see additional information on the menu items, the user can start selecting items they wish to add to their 'cart'.
+  2. After selecting an item by inputting one of the numbers next to the item, said item will be added to the Users 'cart' and will display a message confirming so. The user will then be asked if they would like to order another time.
+     1. yes or no inputs are accepted. All else triggers an instruction message.
+  3. When the user has completed the ordering process by inputting no when prompted if they would want to order something else. The user will return to the main menu
 ### Orders Database 
+
+The orders selected during the ordering process are added into the User's virtual 'cart' which is a hash that counts the number of specific items are being added.
+This information is later referred to when displaying current order information in a table, calculating total cost of the order, and calculating reduction in total cost if a discount is applied.
 
 ### Deduction in Price With Specific Input
 
+This feature allows users to apply a discount code which will reduce the total cost of the user's order. The discount code is applied by assigning a discount variable depending on what the user inputs which will them be passed on to the final calculation.
+
+1. After the user has completed the ordering process they can enter the checkout process by selecting it from the menu input.
+   1. If the user's cart is empty the user will not be able to enter the process and be advised they can only proceed once they start ordering.
+2. After doing so they will be prompted with a request for a discount code if they have one, otherwise they can input no to proceed without a discount code.
+   1. If the user enters "save the kids" promotional code, a 10% off discount will apply to the final order.
+   2. If the user enters "employee discount", a 15% off discount will apply to the final order.
+   3. If the user inputs anything else and error will occur advising they can only input an employee discount code, promotional code, or 'no'.
+
 ### Payment By Way of Input 
 
+For this feature the user can input any amount which they would like to pay and the program will store that amount to display in the virtual receipt and advise them the difference being their change.
+
+As the program cannot actually take payments, this is just a feature to showcase the program ability to make calculation and output that information in a stakeholder friendly way (Users seeing how much change they receive, Staff seeing if the user has paid, how much they have paid and how much change they received.)
 
 ### Display Total Order With Items 
 
@@ -104,6 +122,10 @@ The loop structure was also updated so that the display menu item description fe
 This change was so the interface behaves more like a menu where Users look at what the menu items are before they orde instead of asking about each item as they order.
 
 This would improve user experience as well as they would not have to constantly input no if they do not want to know more about each item they are selecting to add to their 'cart'.
+
+The discount portion of the sitemap operates in the same manner however its just be simplified for display.
+
+The exit option was also added during the implementation process as the thought of what if a User walks into the restaurant, doesn't like what they see and walk out came up. So the exit option allows the user to cancel their order with no details being kept, so the next user can order.
 
 ![](docs\sitemap_original.png)
 

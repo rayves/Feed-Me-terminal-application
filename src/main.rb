@@ -17,7 +17,7 @@ if ARGV.length > 0
     flag, *rest = ARGV
     ARGV.clear
     case flag
-    when '-help' || '-h'
+    when '-help'
         help 
         exit!
     when 'show_menu'

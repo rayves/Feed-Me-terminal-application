@@ -1,5 +1,12 @@
 # Feed Me Terminal Application
 
+███████╗███████╗███████╗██████╗░  ███╗░░░███╗███████╗██╗
+██╔════╝██╔════╝██╔════╝██╔══██╗  ████╗░████║██╔════╝██║
+█████╗░░█████╗░░█████╗░░██║░░██║  ██╔████╔██║█████╗░░██║
+██╔══╝░░██╔══╝░░██╔══╝░░██║░░██║  ██║╚██╔╝██║██╔══╝░░╚═╝
+██║░░░░░███████╗███████╗██████╔╝  ██║░╚═╝░██║███████╗██╗
+╚═╝░░░░░╚══════╝╚══════╝╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝
+
 # Links
 ## Github Repository Link
 
@@ -49,7 +56,7 @@ For a personalized experience the program will ask for the users name which will
 
 2. Database Menu Items Display
 
-Displays menu items for the user to choose from and add to their order.
+Displays menu items for the user to choose and add to their order.
 
    1. The program imports in a csv with the name, description, price, and ingredients, and stores this information in an array waiting to be manipulated.
    2. The name, description and prices will then be displayed in a user friendly way in a table using the [Terminal Table](https://github.com/tj/terminal-table/) Ruby gem.
@@ -58,12 +65,16 @@ Displays menu items for the user to choose from and add to their order.
    
    This feature displays a description of each of the menu items that is selected by the user.
 
-   1. Users once selecting that they want to start ordering will be prompted with a question asking if they would like to read further details on each of the menu items - describing the item with an overview of the ingredients.
+   1. Users once selecting Order will be prompted with a question asking if they would like to read further details on each of the menu items - describing the item with an overview of the ingredients.
    2. if 'yes' then they can input the numbers next to the items for a brief explanation of each.
    3. Once done they can input 'cancel' to return to the ordering menu where they will be prompted the same question whether they would like to read further details on each menu item
    4. if anything other than the above is entered an invalid input message will be display, then advising the correct input.
 
 4. Customer order selection 
+
+    This feature is where the ordering of items actually begins. Users select the item they wish to order by inputting the number next to the menu item and the item is added to the virtual 'cart'.
+
+    1. After entering 'no' to wanting to see additional information on the menu items, the user can being selecting items they wish to add to their
 
 5. Customer item removal 
 
@@ -97,31 +108,34 @@ Tracking of the implementation plan has been done through [Trello](https://trell
 - any dependencies required by the application to operate
 - any system/hardware requirements
 
-# Usage
+# Usage & Install Instructions
 
-## Program Execution
+## Dependencies
 
-Option 1: Run the main file via terminal either by executing the file's entire PATH from root or from the `Feed-Me-terminal-application/src directory` directory
+### Ruby Version
 
-    $ ruby main.rb
+This application requires ruby version 3.0.2 to execute.
 
-Option 2: Run the bash script file from the terminal either by inputing its entire PATH from your devices root, or by navigating to the `Feed-Me-terminal-application/src directory` and executing the below command.
+You can check your version of ruby by executing the command below in your terminal
 
-    $ ./feed_me.sh
+    $ ruby -v
 
-## Discount code
+If you do not have Ruby 3.0.2 version, please install this version. Instructions may differ for what ruby version management system you may be using Please visit the [Ruby](https://www.ruby-lang.org/en/documentation/installation/) website for your specific instructions.
 
-Within the program when prompted to input a promotional discount code or an employee discount code, the below inputs are the only valid inputs for a discount code.
+The commands for `rvm` is displayed below.
 
-### Promotional Discount Code
+    $ rvm install 3.0.2
 
-    $ save the kids
+After run the below command to check that you are currently using that version.
 
-### Employee Discount Code
+    $ rvm list
 
-    $ employee discount
+If not, you the below command to switch to this version.
 
-# Dependencies
+    $ rvm use 3.0.2
+
+
+### Gems
 
 The dependencies are bundled within the bundle file which is generated using the [Bundle](https://github.com/rubygems/bundler) gem. Please install bundler if not already installed for the below commands to execute properly.
 
@@ -135,3 +149,47 @@ Required Gemlist:
 - [rspec](https://github.com/rspec/rspec-core)
 - [artii](https://github.com/miketierney/artii)
 - [CSV](https://github.com/ruby/csv)
+
+## Program Execution
+
+Option 1: Run the main file via terminal either by executing the file's entire PATH from root or from the `Feed-Me-terminal-application/src directory` directory
+
+    $ ruby main.rb
+
+Option 2: Run the bash script file from the terminal either by inputing its entire PATH from your devices root, or by navigating to the `Feed-Me-terminal-application/src directory` and executing the below command.
+
+    $ ./feed_me.sh
+
+
+# ARGV Arguments
+
+The below commands will display a help message explaining how the app functions.
+
+    $ ruby main.rb -help
+
+The below command will show the menu available within the app.
+
+    $ ruby main.rb show_menu
+
+
+## Discount code
+
+Within the program when prompted to input a promotional discount code or an employee discount code, the below inputs are the only valid inputs for a discount code.
+
+### Promotional Discount Code
+
+    $ save the kids
+
+### Employee Discount Code
+
+    $ employee discount
+
+# Screens
+
+![](docs\screen1.png)
+![](docs\screen2.png)
+![](docs\screen3.png)
+![](docs\screen4.png)
+![](docs\screen5.png)
+![](docs\screen6.png)
+![](docs\screen7.png)

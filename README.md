@@ -234,7 +234,3 @@ Within the program when prompted to input a promotional discount code or an empl
 ![](docs/screen1.png)
 ![](docs/screen2.png)
 ![](docs/screen3.png)
-![](docs/screen4.png)
-![](docs/screen5.png)
-![](docs/screen6.png)
-![](docs/screen7.png)

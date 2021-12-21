@@ -16,3 +16,6 @@ end
 
 class NoNameError < StandardError
 end
+
+class NoNumberError < StandardError
+end

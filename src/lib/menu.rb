@@ -118,6 +118,7 @@ module Menu
                         #* Additional description option [NO]
                         elsif info.downcase == "no"
                             puts "Please select the items you would like to add to your cart."
+                            puts "\n"
                             puts "Input 'cancel' if you would like to return to the main menu."
                             mark
                             shopping = false
@@ -139,7 +140,7 @@ module Menu
                                     end
                                     clear
                                     Menu.display_menu
-                                    puts "#{@@food[shopping.to_i - 1]} has been added to your cart."
+                                    puts "#{@@food[shopping.to_i - 1]} has been added to your cart.".colorize(:green)
                                     puts "\n"
                                     puts "Would you like to order something else? (yes/no)"
                                     mark
@@ -242,7 +243,7 @@ module Menu
                     clear
                     #* If cart [IS NOT] empty then proceed
                     if cust_name.order.length > 0
-                    puts "Your order is confirmed."
+                    puts "Your order is confirmed.".colorize(:green)
                     puts "\n"
                     puts "You will now proceed to the payment section."
                     puts "\n"
@@ -254,17 +255,20 @@ module Menu
                             if promo_code.downcase == "employee discount"
                                 clear
                                 discount = 0.15
-                                puts "Your employee discount of 15% off final order has been added to your order."
+                                puts "Your employee discount of 15% off final order has been added to your order.".colorize(:green)
+                                puts "\n"
                                 break
                             elsif promo_code.downcase == "save the kids"
                                 clear
                                 discount = 0.10
-                                puts "Save the Kids promotional discount of 10% off final order has been added to your order."
+                                puts "Save the Kids promotional discount of 10% off final order has been added to your order.".colorize(:green)
+                                puts "\n"
                                 break
                             elsif promo_code.downcase == "no"
                                 clear
                                 discount = 0
-                                puts "Proceeding to payment."
+                                puts "Proceeding to payment.".colorize(:green)
+                                puts "\n"
                                 break
                             else
                                 clear
@@ -288,29 +292,31 @@ module Menu
                         puts "\n"
                         puts "Please see your confirmed order above."
                         puts "\n"
-                        puts "Please enter a full number amount you wish to pay."
+                        puts "Please enter an amount you wish to pay."
                         begin
                         mark
-                        while payment = Integer(gets.chomp)
+                        while payment = gets.chomp.to_f
                             grand_total = calculate_grand_total(cust_name.order, cust_name.order_cost, discount)
                             if payment == grand_total
                                 clear
-                                puts "Payment confirmed."
+                                puts "Payment confirmed.".colorize(:green)
                                 break
                             elsif payment > grand_total
                                 clear
-                                puts "Payment confirmed."
+                                puts "Payment confirmed.".colorize(:green)
                                 puts "\n"
-                                puts "Your change is $#{(payment.to_f - grand_total).round(2)}."
+                                puts "Your change is $#{(payment - grand_total).round(2)}."
                                 break
-                            elsif payment < grand_total && payment >= 0
+                            elsif payment < grand_total && payment > 0
                                 clear
                                 puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
                                 puts "\n"
-                                puts "Insufficient funds."
+                                puts "Insufficient funds.".colorize(:red)
                                 puts "\n"
-                                puts "Please input an amount greater than the Grand Total of your order."
+                                puts "Please input an amount greater than or equal to the Grand Total of your order."
                                 mark
+                            elsif payment == 0 || payment == 0.0
+                                raise NoNumberError, "Amount must be a number and cannot be 0"
                             else
                                 clear
                                 puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
@@ -319,14 +325,22 @@ module Menu
                                 mark
                             end
                         end
-                        rescue ArgumentError
+                        rescue NoNumberError => e
                             clear
                             puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
                             puts "\n"
-                            puts "Please only enter full numbers."
+                            puts e.message.colorize(:red)
                             puts "\n"
-                            puts "Please enter a full number amount you wish to pay."
+                            puts "Please enter an amount you wish to pay."
                             retry
+                        rescue
+                            clear
+                            puts checkout_table(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount)
+                            puts "\n"
+                            puts "An Error has occurred.".colorize(:red)
+                            puts "\n"
+                            puts "Please wait for a staff member to come to your assistance".colorize(:blue)
+                            exit!
                         end
                         puts "\n"
                         puts receipt(cust_name.order, cust_name.order_cost, cust_name.cust_id, discount, payment)
@@ -380,7 +394,7 @@ module Menu
     end
 
     def Menu.ordered_message
-        puts "Your order is being processed."
+        puts "Your order is being processed.".colorize(:green)
         puts "\n"
         puts "Please take this receipt while your order is being prepared."
         puts "\n"

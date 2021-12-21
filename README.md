@@ -203,7 +203,9 @@ If not, you the below command to switch to this version.
 
 ### Gems
 
-The dependencies are bundled within the bundle file which is generated using the [Bundle](https://github.com/rubygems/bundler) gem. Please install bundler if not already installed for the below commands to execute properly.
+The dependencies are bundled within the bundle file which is generated using the [Bundle](https://github.com/rubygems/bundler) gem. Please install bundler if not already installed for the below commands to execute properly. Bundler install command can be seen below for your convenience.
+
+    $ gem install bundler
 
  From the `Feed-Me-terminal-application/src` directory execute the below command within the terminal to install bundle gem dependencies. 
 
